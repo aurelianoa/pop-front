@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@web3modal/ethereum": "^2.7.1",
+    "@lukso/lsp-smart-contracts": "^0.12.1",
     "ethers": "^6.8.1",
     "next": "14.0.1",
     "next-auth": "^4.24.4",

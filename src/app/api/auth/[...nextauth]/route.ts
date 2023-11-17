@@ -1,14 +1,13 @@
 import NextAuth from "next-auth"
 import type { NextApiRequest, NextApiResponse } from "next"
 import CredentialsProvider from "next-auth/providers/credentials";
-import { getCsrfToken } from "next-auth/react"
-import { SiweMessage } from "siwe"
+import { verifyMessage } from "@/app/utils/signMessage";
 
 
-export default async function auth(req: any, res: any) {
-  const providers = [
+const authOptions = {
+  providers: [
     CredentialsProvider({
-      name: "Ethereum",
+      name: "credentials",
       credentials: {
         message: {
           label: "Message",
@@ -20,55 +19,53 @@ export default async function auth(req: any, res: any) {
           type: "text",
           placeholder: "0x0",
         },
+        address: {
+          label: "Address",
+          type: "text",
+          placeholder: "0x0",
+        },
       },
       async authorize(credentials) {
         try {
-          const siwe = new SiweMessage(JSON.parse(credentials?.message || "{}"))
-          const nextAuthUrl = new URL(process.env.NEXTAUTH_URL ?? "")
-
-          const result = await siwe.verify({
-            signature: credentials?.signature || "",
-            domain: nextAuthUrl.host,
-            nonce: await getCsrfToken({ req }),
-          })
-
-          if (result.success) {
+          
+          const result = await verifyMessage({
+              message: credentials?.message || "",
+              signature: credentials?.signature || "",
+              address: credentials?.address || "",
+          });
+      
+          if (result) {
             return {
-              id: siwe.address,
+              id: credentials?.address || "",
             }
           }
           return null
         } catch (e) {
+          console.log(e)
           return null
         }
       },
     }),
-  ]
-
-  const isDefaultSigninPage =
-    req.method === "GET" && req.query.nextauth.includes("signin")
-
-  // Hide Sign-In with Ethereum from default sign page
-  if (isDefaultSigninPage) {
-    providers.pop()
-  }
-
-  return await NextAuth(req, res, {
-    // https://next-auth.js.org/configuration/providers/oauth
-    providers,
-    session: {
-      strategy: "jwt",
+  ],
+  secret: process.env.NEXTAUTH_SECRET ?? '',
+  callbacks: {
+    async session({ session, token }: { session: any; token: any }) {
+      session.address = token.sub
+      session.user.name = token.sub
+      session.user.image = "https://www.fillmurray.com/128/128"
+      return session
     },
-    secret: process.env.NEXTAUTH_SECRET,
-    callbacks: {
-      async session({ session, token }: { session: any; token: any }) {
-        session.address = token.sub
-        session.user.name = token.sub
-        session.user.image = "https://www.fillmurray.com/128/128"
-        return session
-      },
-    },
-  })
-}
+  },
+  pages: {
+    signIn: "/auth/signin",
+  },
+  jwt: {
+    secret: process.env.NEXTAUTH_SECRET ?? '',
+  },
+
   
-//export {handler as GET, handler as POST};
+}
+
+const handler = NextAuth(authOptions);
+  
+export {handler as GET, handler as POST};
