@@ -2,16 +2,14 @@
 import { configureChains, createConfig, WagmiConfig } from 'wagmi';
 import { luksoConector } from '@/app/utils/luksoConnector';
 import { luksoTestnet } from '@/app/utils/luksoConfig';
-import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
+import { publicProvider } from 'wagmi/providers/public'
+
+
 
 const chains = [luksoTestnet]
 
 const { publicClient } = configureChains(chains,[
-  jsonRpcProvider({
-    rpc: (luksoTestnet) => ({
-      http: luksoTestnet.rpcUrls.public.http[0],
-    }),
-  })
+ publicProvider()
 ])
 
 const wagmiConfig = createConfig({

@@ -3,7 +3,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import dynamic from "next/dynamic";
 const SessionProvider = dynamic(()=> import('@/app/components/SessionProvider'), {ssr:false});
-
+const AuthSessionProvider = dynamic(()=> import('@/app/components/AuthSessionProvider'), {ssr:false});
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
@@ -14,14 +14,16 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode,
 }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <SessionProvider>
-          {children}
-        </SessionProvider>
+        <AuthSessionProvider>
+          <SessionProvider>
+            {children}
+          </SessionProvider>
+        </AuthSessionProvider>
       </body>
     </html>
   )

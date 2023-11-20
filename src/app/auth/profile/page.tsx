@@ -4,33 +4,26 @@ import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 const FormattedWallet = dynamic(()=>import('@/app/components/UniversalProfile/FormattedWallet'),{ssr:false});
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react"
 
-export default function Me({ params } : {params: {token: string}}) {
+
+export default function MyProfile() {
   const { address, isConnected } = useAccount()
-  const [username, setUsername] = useState<string>('');
-  const router = useRouter();
-  
-  async function getUser () {
-    const res = await fetch("/api/auth/profile", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            access_token: params.token,
-        }),
-    });
-    const data = await res.json();
-    setUsername(data.username);
-  }
+  const { data: session } = useSession()
 
+  const router = useRouter(); 
+  
+  
   useEffect(() => {
+    console.log("isConnected", isConnected);
+    console.log("address", address);
+    console.log("session", session);
     if(isConnected && address) {
-      getUser();
+      console.log("is connected");
     } else {
-        router.push('/auth/signin');
+        //router.push('/auth/signin');
     }
-  });
+  },[isConnected, address, session]);
 
   return (
     <>
@@ -48,7 +41,7 @@ export default function Me({ params } : {params: {token: string}}) {
                   <FormattedWallet />
             </div>
             <div className="text-black mx-auto text-center text-lg">
-                Username: {username}
+                address: {address}
             </div>
             <div>
             </div>

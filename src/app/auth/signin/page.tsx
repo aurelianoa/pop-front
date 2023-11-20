@@ -29,6 +29,7 @@ export default function SignIn() {
         });
         
         
+        
         setTxPendingStatus(false);
     } catch (error) {
       window.alert(error)
