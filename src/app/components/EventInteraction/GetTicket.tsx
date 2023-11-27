@@ -27,7 +27,6 @@ export default function GetTicket(props: {event: string}) {
 
     async function rvsp() {
         try {
-            
             setTxStatus(true);
             setTransactionStatus("pending");
             setTx(null);

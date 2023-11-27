@@ -2,7 +2,7 @@
 import { Disclosure } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { signOut } from "next-auth/react";
-import { UserCircleIcon} from '@heroicons/react/20/solid';
+import { UserCircleIcon } from '@heroicons/react/20/solid';
 import Image from 'next/image';
 import Link from 'next/link'
 
@@ -70,14 +70,14 @@ export default function Navbar() {
               <div className="mt-3 space-y-1 px-2">
                 <Disclosure.Button
                   as="a"
-                  href="auth/profile"
+                  href="/auth/profile"
                   className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
                 >
                   Your Profile
                 </Disclosure.Button>
                 <Disclosure.Button
                   as="a"
-                  href="auth/profile"
+                  href="/auth/profile"
                   className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
                 >
                   Settings
