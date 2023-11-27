@@ -1,29 +1,13 @@
 'use client'
-import { useAccount } from "wagmi";
-import { useState, useEffect } from "react";
-import dynamic from "next/dynamic";
-const FormattedWallet = dynamic(()=>import('@/app/components/UniversalProfile/FormattedWallet'),{ssr:false});
-import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react"
+import { useSession } from "next-auth/react";
+import { shortenAddress } from "@/app/utils/shorten";
+import TicketsOfOwner from "@/app/components/EventInteraction/TicketsOfOwner";
+import BadgesOfOwner from "@/app/components/BadgeInteraction/BadgesOfOwner";
+
 
 
 export default function MyProfile() {
-  const { address, isConnected } = useAccount()
   const { data: session } = useSession()
-
-  const router = useRouter(); 
-  
-  
-  useEffect(() => {
-    console.log("isConnected", isConnected);
-    console.log("address", address);
-    console.log("session", session);
-    if(isConnected && address) {
-      console.log("is connected");
-    } else {
-        //router.push('/auth/signin');
-    }
-  },[isConnected, address, session]);
 
   return (
     <>
@@ -34,23 +18,26 @@ export default function MyProfile() {
               User
             </h2>
           </div>
-          {isConnected && address ?
           <div className="space-y-6">
             <div className="relative -space-y-px rounded-md shadow-sm">
               <div className="pointer-events-none absolute inset-0 z-10 rounded-md ring-1 ring-inset ring-gray-300" />
-                  <FormattedWallet />
+              UP address: {shortenAddress(session?.user?.name)}
             </div>
-            <div className="text-black mx-auto text-center text-lg">
-                address: {address}
-            </div>
+            <div className="flex min-h-full flex-1 items-left justify-center">
+              <BadgesOfOwner ownerAddress={session?.user?.name ?? ''}/>
+             </div>
+             
             <div>
             </div>
           </div>
-          : 
-          <></>
-          }
+          
         </div>
       </div>
+      <div className="flex min-h-full flex-1 items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
+        <TicketsOfOwner ownerAddress={session?.user?.name ?? ''}/>
+      </div>
+      
+      
     </>
   )
 }

@@ -9,10 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.17",
+    "@heroicons/react": "^2.0.18",
     "@lukso/lsp-smart-contracts": "^0.12.1",
+    "@yudiel/react-qr-scanner": "^1.2.3",
     "ethers": "^6.8.1",
     "next": "14.0.1",
     "next-auth": "^4.24.4",
+    "qrcode.react": "^3.1.0",
     "react": "^18",
     "react-dom": "^18",
     "siwe": "^2.1.4",
