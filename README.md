@@ -1,3 +1,13 @@
+## POP UP Web App
+
+This a demo app that interacts with following smart contracts on the lukso testnet
+
+```bash
+EventIndex: 0x4515A7eC4defd2a407f0b48fa9ceD0c9120bD3f0
+Event: 0xB138312FFF2c73DFc08dc49D0ca247f1322Ce25b
+Badges: 0x541aAf23Fe84B423D99f42a40455FB5930a8C007
+```
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
